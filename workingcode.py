@@ -73,4 +73,4 @@ print(df.tail())
 # 9. Save the cleaned DataFrame to a new CSV file
 cleaned_file_path = 'surv_variants_cleaned.csv'
 df.to_csv(cleaned_file_path, index=False)
-print(f"\nCleaned data saved to {cleaned_file_path})
+print(f"\nCleaned data saved to {cleaned_file_path}")
