@@ -84,16 +84,14 @@ df.loc[mask, 'mortality_rate'] = df['total_deaths'] / df['total_cases']
 print("Checkpoint 5: Specific handling for zeros and consistency adjustments complete.")
 print("--------------------------------------------------\n")
 
-# 6. Date conversion and duration calculation:
+# 6. Date conversion and duration calculation using 'first_seq' and 'last_seq'
 if 'first_seq' in df.columns and 'last_seq' in df.columns:
     print("Processing date conversion and duration calculation using 'first_seq' and 'last_seq'...")
     df['first_seq'] = pd.to_datetime(df['first_seq'], errors='coerce')
     df['last_seq'] = pd.to_datetime(df['last_seq'], errors='coerce')
-    # Calculate duration as the difference in days plus 1 (ensuring a minimum of 1)
-    df['duration'] = (df['last_seq'] - df['first_seq']).dt.days + 1
-    # Explicitly set any duration < 1 to 1
-    df.loc[df['duration'] < 1, 'duration'] = 1
-    print("After .loc adjustment, min duration:", df['duration'].min())
+    # Calculate duration using the earlier date as the start and the later date as the end
+    df['duration'] = (df[['first_seq', 'last_seq']].max(axis=1) - df[['first_seq', 'last_seq']].min(axis=1)).dt.days + 1
+    print("After duration calculation, min duration:", df['duration'].min())
     print("Duration column calculated based on 'first_seq' and 'last_seq', with minimum value set to 1.")
 else:
     print("Either 'first_seq' or 'last_seq' column is missing; skipping duration calculation.")
