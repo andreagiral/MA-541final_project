@@ -3,7 +3,7 @@ import numpy as np
 
 # 1. Load the dataset
 df = pd.read_csv('surv_variants_updated.csv')
-
+df.columns = df.columns.str.strip()  # Remove any leading/trailing whitespace
 print("Initial Data Info:")
 print(df.info())
 print("\nInitial Data Head:")
@@ -41,8 +41,8 @@ print("--------------------------------------------------\n")
 # We'll assume that missing data in total_cases, total_deaths, and mortality_rate are recorded as 0.
 # We'll group by 'country' and 'variant' if available.
 group_cols = []
-if 'country' in df.columns:
-    group_cols.append('country')
+if 'Country' in df.columns:
+    group_cols.append('Country')
 if 'variant' in df.columns:
     group_cols.append('variant')
 print("Group columns:", group_cols)
@@ -85,18 +85,18 @@ print("Checkpoint 5: Specific handling for zeros and consistency adjustments com
 print("--------------------------------------------------\n")
 
 # 6. Date conversion and duration calculation:
-if 'first_seq' in df.columns and 'censure_date' in df.columns:
-    print("Processing date conversion and duration calculation using 'first_seq' and 'censure_date'...")
+if 'first_seq' in df.columns and 'last_seq' in df.columns:
+    print("Processing date conversion and duration calculation using 'first_seq' and 'last_seq'...")
     df['first_seq'] = pd.to_datetime(df['first_seq'], errors='coerce')
-    df['censure_date'] = pd.to_datetime(df['censure_date'], errors='coerce')
-    # Calculate duration as the difference in days plus 1 (ensuring a minimum duration of 1)
-    df['duration'] = (df['censure_date'] - df['first_seq']).dt.days + 1
-    # Use .loc to explicitly set any duration < 1 to 1
+    df['last_seq'] = pd.to_datetime(df['last_seq'], errors='coerce')
+    # Calculate duration as the difference in days plus 1 (ensuring a minimum of 1)
+    df['duration'] = (df['last_seq'] - df['first_seq']).dt.days + 1
+    # Explicitly set any duration < 1 to 1
     df.loc[df['duration'] < 1, 'duration'] = 1
     print("After .loc adjustment, min duration:", df['duration'].min())
-    print("Duration column calculated based on 'first_seq' and 'censure_date', with minimum value set to 1.")
+    print("Duration column calculated based on 'first_seq' and 'last_seq', with minimum value set to 1.")
 else:
-    print("Either 'first_seq' or 'censure_date' column is missing; skipping duration calculation.")
+    print("Either 'first_seq' or 'last_seq' column is missing; skipping duration calculation.")
 print("--------------------------------------------------\n")
 
 # 7. Outlier detection and removal using the IQR method for numeric columns
@@ -137,7 +137,25 @@ print("\nCleaned Data Tail:")
 print(df.tail())
 print("--------------------------------------------------\n")
 
-# 10. Save the cleaned DataFrame to a new CSV file
+#10. Grouping by Continent
+if 'Continent' in df.columns:
+    print("Grouping data by Continent:")
+    continents = df['Continent'].unique()
+    for cont in sorted(continents):
+        cont_df = df[df['Continent'] == cont]
+        # Optionally, sort by country if available
+        if 'country' in cont_df.columns:
+            cont_df = cont_df.sort_values(by='country')
+        print(f"Continent: {cont}, Number of records: {len(cont_df)}")
+        # Save each continent's data to a separate CSV file
+        cont_file = f"surv_variants_cleaned_{cont}.csv"
+        cont_df.to_csv(cont_file, index=False)
+        print(f"Saved data for {cont} to {cont_file}")
+else:
+    print("No 'Continent' column found. Skipping grouping by continent.")
+print("--------------------------------------------------\n")
+
+# 11. Save the cleaned DataFrame to a new CSV file
 cleaned_file_path = 'surv_variants_cleaned.csv'
 df.to_csv(cleaned_file_path, index=False)
 print(f"\nCleaned data saved to {cleaned_file_path}")
