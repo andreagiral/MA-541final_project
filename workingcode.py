@@ -100,6 +100,7 @@ else:
 print("--------------------------------------------------\n")
 
 # 7. Outlier detection and removal using the IQR method for numeric columns
+IQR_multiplier = 3     # Increased from 1.5 to 3 to reduce removal of legitimate data
 numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
 outlier_mask = pd.Series(False, index=df.index)
 print("\nOutlier removal process:")
@@ -107,8 +108,8 @@ for col in numeric_cols:
     Q1 = df[col].quantile(0.25)
     Q3 = df[col].quantile(0.75)
     IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
+    lower_bound = Q1 - IQR_multiplier * IQR
+    upper_bound = Q3 + IQR_multiplier * IQR
     # Mark rows as outliers if any numeric column falls outside its bounds
     outlier_mask |= (df[col] < lower_bound) | (df[col] > upper_bound)
     print(f"Column '{col}': Lower bound = {lower_bound}, Upper bound = {upper_bound}")
