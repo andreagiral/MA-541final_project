@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tabulate import tabulate
 
-original_data = pd.read_csv('/content/surv_variants_cleaned.csv')  # Update with correct path
+original_data = pd.read_csv('/content/surv_variants_cleaned.csv')
 
 #generate summary statistics
 def generate_summary_statistics_limited(df):
