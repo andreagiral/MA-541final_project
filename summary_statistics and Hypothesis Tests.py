@@ -13,7 +13,7 @@ import numpy as np
 from tabulate import tabulate
 from scipy.stats import ttest_ind, mannwhitneyu
 
-original_data = pd.read_csv('/content/surv_variants_cleaned.csv')
+original_data = pd.read_csv('surv_variants_cleaned.csv')
 
 #summary statistics
 def generate_summary_statistics_limited(df):
@@ -95,10 +95,11 @@ u_stat, u_pval = mannwhitneyu(asia, europe, alternative='two-sided')
 test_results_df = pd.DataFrame({
     "Test": [
         "Two-Sample t-Test",
-        "Mann–Whitney U Test"
+        "Mann-Whitney U Test"
     ],
     "Statistic": [round(t_stat, 4), round(u_stat, 2)],
     "p-value": [round(t_pval, 8), f"{u_pval:.2e}"]
 })
 
-test_results_df
+print("\n--- Hypothesis Testing Results ---")
+print(test_results_df.to_string(index=False))
