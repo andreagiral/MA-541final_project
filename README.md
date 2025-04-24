@@ -1,6 +1,7 @@
+
 # MA-541final_project
 # 🧬 COVID-19 Variant Impact Analysis
-
+<small>
 This project explores how different COVID-19 variants behaved across various countries and continents using data-driven methods. We analyzed trends in **mortality**, **duration**, **growth rate**, and **total cases**, while applying statistical inference and predictive modeling techniques. Our goal was to understand the relationship between spread rate, geography, and severity of each variant.
 ---
 ## 📁 Repository Structure
@@ -53,3 +54,4 @@ This project explores how different COVID-19 variants behaved across various cou
 Our analysis reveals valuable descriptive insights but limited predictive power due to the complexity of COVID-19 variant behavior. Mortality rates vary significantly across regions and growth rates, but prediction requires additional data (e.g., healthcare infrastructure, vaccination coverage). While we modeled distributions and correlations effectively, accurate forecasting remains a challenge with this dataset alone.
 
 ---
+<small>
