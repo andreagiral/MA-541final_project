@@ -16,6 +16,7 @@ This project explores how different COVID-19 variants behaved across various cou
 | `Correlation Analysis.py` | Correlation heatmaps, Pearson coefficients, and pairwise variable analysis |
 | `Building Models.py` | Regression (linear, ridge, lasso, PCR) and classification models (logistic, decision tree) |
 | `Final_code.py` | Combined script with all sections (cleaning, statistics, hypothesis, distributions, correlations, models/classification) |
+| `CODE+VISUALS.ipynb` |	Full code with visual graphs for presentation and exploration |
 | `ANOVA Tests.xlsx` | ANOVA test results for comparing mortality rates across continents |
 ---
 ## 🔍 Key Analyses
